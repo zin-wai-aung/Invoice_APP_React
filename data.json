@@ -1,0 +1,242 @@
+{
+  "products": [
+    {
+      "product_name": "Apple",
+      "price": "2000",
+      "created_at": "2024-12-14T05:12:09.209Z",
+      "id": 1
+    },
+    {
+      "product_name": "Orange",
+      "price": "1500",
+      "created_at": "2024-12-14T05:12:19.310Z",
+      "id": 2
+    },
+    {
+      "product_name": "Strawberry",
+      "price": "3000",
+      "created_at": "2024-12-14T05:12:30.961Z",
+      "id": 3
+    },
+    {
+      "product_name": "Watermelon",
+      "price": "2000",
+      "created_at": "2024-12-14T05:12:42.810Z",
+      "id": 4
+    },
+    {
+      "product_name": "Avocado",
+      "price": "2500",
+      "created_at": "2024-12-14T05:12:59.440Z",
+      "id": 5
+    },
+    {
+      "product_name": "Mango",
+      "price": "1500",
+      "created_at": "2024-12-14T05:13:16.793Z",
+      "id": 6
+    }
+  ],
+  "vouchers": [
+    {
+      "voucher_id": "INV-20241214-8152",
+      "customer_name": "Ko Ko",
+      "customer_email": "koko@gmail.com",
+      "sale_date": "2024-12-14",
+      "redirect_to_detail": false,
+      "all_correct": true,
+      "records": [
+        {
+          "id": 1734153841487,
+          "product": {
+            "product_name": "Strawberry",
+            "price": "3000",
+            "created_at": "2024-12-14T05:12:30.961Z",
+            "id": 3
+          },
+          "quantity": "4",
+          "cost": 12000,
+          "created_at": "2024-12-14T05:24:01.487Z"
+        },
+        {
+          "id": 1734153954500,
+          "product": {
+            "product_name": "Orange",
+            "price": "1500",
+            "created_at": "2024-12-14T05:12:19.310Z",
+            "id": 2
+          },
+          "quantity": "3",
+          "cost": 4500,
+          "created_at": "2024-12-14T05:25:54.500Z"
+        }
+      ],
+      "total": 16500,
+      "tax": 1155,
+      "netTotal": 17655,
+      "id": 1
+    },
+    {
+      "voucher_id": "INV-20241214-5997",
+      "customer_name": "Angel",
+      "customer_email": "angle@gmail.com",
+      "sale_date": "2024-12-14",
+      "redirect_to_detail": true,
+      "all_correct": true,
+      "records": [
+        {
+          "id": 1734153973969,
+          "product": {
+            "product_name": "Apple",
+            "price": "2000",
+            "created_at": "2024-12-14T05:12:09.209Z",
+            "id": 1
+          },
+          "quantity": "3",
+          "cost": 6000,
+          "created_at": "2024-12-14T05:26:13.969Z"
+        },
+        {
+          "id": 1734153989669,
+          "product": {
+            "product_name": "Mango",
+            "price": "1500",
+            "created_at": "2024-12-14T05:13:16.793Z",
+            "id": 6
+          },
+          "quantity": "2",
+          "cost": 3000,
+          "created_at": "2024-12-14T05:26:29.669Z"
+        },
+        {
+          "id": 1734153994802,
+          "product": {
+            "product_name": "Strawberry",
+            "price": "3000",
+            "created_at": "2024-12-14T05:12:30.961Z",
+            "id": 3
+          },
+          "quantity": "10",
+          "cost": 30000,
+          "created_at": "2024-12-14T05:26:34.802Z"
+        }
+      ],
+      "total": 39000,
+      "tax": 2730.0000000000005,
+      "netTotal": 41730,
+      "id": 2
+    },
+    {
+      "voucher_id": "INV-20241214-7668",
+      "customer_name": "John",
+      "customer_email": "john@gmail.com",
+      "sale_date": "2024-12-14",
+      "redirect_to_detail": true,
+      "all_correct": true,
+      "records": [
+        {
+          "id": 1734154151271,
+          "product": {
+            "product_name": "Orange",
+            "price": "1500",
+            "created_at": "2024-12-14T05:12:19.310Z",
+            "id": 2
+          },
+          "quantity": "3",
+          "cost": 4500,
+          "created_at": "2024-12-14T05:29:11.271Z"
+        },
+        {
+          "id": 1734154157153,
+          "product": {
+            "product_name": "Apple",
+            "price": "2000",
+            "created_at": "2024-12-14T05:12:09.209Z",
+            "id": 1
+          },
+          "quantity": "5",
+          "cost": 10000,
+          "created_at": "2024-12-14T05:29:17.153Z"
+        },
+        {
+          "id": 1734154161671,
+          "product": {
+            "product_name": "Watermelon",
+            "price": "2000",
+            "created_at": "2024-12-14T05:12:42.810Z",
+            "id": 4
+          },
+          "quantity": "10",
+          "cost": 20000,
+          "created_at": "2024-12-14T05:29:21.671Z"
+        },
+        {
+          "id": 1734154165754,
+          "product": {
+            "product_name": "Strawberry",
+            "price": "3000",
+            "created_at": "2024-12-14T05:12:30.961Z",
+            "id": 3
+          },
+          "quantity": 10,
+          "cost": 30000,
+          "created_at": "2024-12-14T05:29:25.754Z"
+        },
+        {
+          "id": 1734154437537,
+          "product": {
+            "product_name": "Avocado",
+            "price": "2500",
+            "created_at": "2024-12-14T05:12:59.440Z",
+            "id": 5
+          },
+          "quantity": "3",
+          "cost": 7500,
+          "created_at": "2024-12-14T05:33:57.537Z"
+        }
+      ],
+      "total": 72000,
+      "tax": 5040.000000000001,
+      "netTotal": 77040,
+      "id": 3
+    },
+    {
+      "voucher_id": "INV-20241214-8172",
+      "customer_name": "Zaw Zaw",
+      "customer_email": "zawzaw@gmail.com",
+      "sale_date": "2024-12-14",
+      "redirect_to_detail": false,
+      "all_correct": true,
+      "records": [
+        {
+          "id": 1734155155594,
+          "product": {
+            "product_name": "Avocado",
+            "price": "2500",
+            "created_at": "2024-12-14T05:12:59.440Z",
+            "id": 5
+          },
+          "quantity": "3",
+          "cost": 7500,
+          "created_at": "2024-12-14T05:45:55.594Z"
+        },
+        {
+          "id": 1734155161162,
+          "product": {
+            "product_name": "Watermelon",
+            "price": "2000",
+            "created_at": "2024-12-14T05:12:42.810Z",
+            "id": 4
+          },
+          "quantity": "5",
+          "cost": 10000,
+          "created_at": "2024-12-14T05:46:01.162Z"
+        }
+      ],
+      "total": 17500,
+      "tax": 1225.0000000000002,
+      "netTotal": 18725,
+      "id": 4
+    }
+  ]
+}
