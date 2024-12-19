@@ -1,18 +1,8 @@
 import React, { useState } from "react";
 
-import {
-  HiComputerDesktop,
-  HiMiniTrash,
-  HiOutlineArrowLongLeft,
-  HiOutlineArrowLongRight,
-  HiOutlinePencil,
-  HiOutlineTrash,
-  HiPlus,
-  HiTrash,
-} from "react-icons/hi2";
-import ShowDate from "./ShowDate";
+import { HiOutlineArrowLongRight,HiOutlineTrash } from "react-icons/hi2";
+import ShowDate from "../ShowDate";
 import { useSWRConfig } from "swr";
-
 import { bouncy } from "ldrs";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
@@ -32,8 +22,8 @@ const VoucherListRow = ({
     await fetch(import.meta.env.VITE_API_URL + `/vouchers/${id}`, {
       method: "DELETE",
     });
-    toast.success("Voucher deleted successfully");
     mutate(import.meta.env.VITE_API_URL + `/vouchers`);
+    toast.success("Voucher deleted successfully");
   };
   return (
     <tr className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
@@ -48,9 +38,9 @@ const VoucherListRow = ({
       <td className="px-6 py-4 text-end">
         <ShowDate timestamp={sale_date} />
       </td>
+
       <td className="px-6 py-4 text-end">
         <div className="inline-flex  rounded-md shadow-sm" role="group">
-          
           <button
             type="button"
             onClick={handleDeleteBtn}
@@ -62,7 +52,10 @@ const VoucherListRow = ({
               <HiOutlineTrash />
             )}
           </button>
-          <Link to={`/voucher/detail/${id}`} className="size-10 flex justify-center items-center text-sm font-medium  bg-white border border-gray-200 rounded-e-lg hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:ring-blue-500 dark:focus:text-white">
+          <Link
+            to={`/voucher/detail/${id}`}
+            className="size-10 flex justify-center items-center text-sm font-medium  bg-white border border-gray-200 rounded-e-lg hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:ring-blue-500 dark:focus:text-white"
+          >
             <HiOutlineArrowLongRight />
           </Link>
         </div>

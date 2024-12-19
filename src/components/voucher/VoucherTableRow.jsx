@@ -1,6 +1,6 @@
 import React from "react";
 import toast from "react-hot-toast";
-import useRecordStore from "../stores/useRecordStore";
+import useRecordStore from "../../stores/useRecordStore";
 
 const VoucherTableRow = ({
   record: {

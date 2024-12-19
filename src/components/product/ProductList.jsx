@@ -1,23 +1,31 @@
-import React from "react";
-import { HiSearch } from "react-icons/hi";
-import {
-  HiPlus,
-} from "react-icons/hi2";
+import React, { useState } from "react";
+import { HiSearch, HiX } from "react-icons/hi";
+import { HiPlus } from "react-icons/hi2";
 import useSWR from "swr";
 import ProductListSkeletonLoader from "./ProductListSkeletonLoader";
-import ProductListEmptyStage from "./ProductListEmptyStage";
-import ProductRow from "./ProductRow";
+import EmptyStage from "../EmptyStage";
+import ProductListRow from "./ProductListRow";
 import { Link } from "react-router-dom";
+import { debounce } from "lodash";
+import Pagination from "../Pagination";
 
 const fetcher = (url) => fetch(url).then((res) => res.json());
 
 const ProductList = () => {
-  const { data, isLoading, error } = useSWR(
-    import.meta.env.VITE_API_URL + "/products",
-    fetcher
+  const [fetchUrl, setFetchUrl] = useState(
+    import.meta.env.VITE_API_URL + "/products"
   );
 
-  // if(isLoading) return <p>Loading...</p>;
+  const { data, isLoading, error } = useSWR(fetchUrl, fetcher);
+
+  const handleSearch = debounce((e) => {
+    e.preventDefault();
+    setFetchUrl(`${import.meta.env.VITE_API_URL}/products?`);
+  }, 500);
+
+  const updateFetchUrl = (url) => {
+    setFetchUrl(url);
+  };
 
   return (
     <div>
@@ -29,6 +37,7 @@ const ProductList = () => {
             </div>
             <input
               type="text"
+              onChange={handleSearch}
               className="bg-gray-50 border border-gray-300 text-stone-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder="Search Product"
             />
@@ -62,6 +71,9 @@ const ProductList = () => {
                 Created At
               </th>
               <th scope="col" className="px-6 py-3 text-end">
+                Updated At
+              </th>
+              <th scope="col" className="px-6 py-3 text-end">
                 Action
               </th>
             </tr>
@@ -69,16 +81,23 @@ const ProductList = () => {
           <tbody>
             {isLoading ? (
               <ProductListSkeletonLoader />
-            ) : data.length === 0 ? (
-              <ProductListEmptyStage />
+            ) : data?.data?.length === 0 ? (
+              <EmptyStage type={"Product"} />
             ) : (
-              data.map((product) => (
-                <ProductRow product={product} key={product.id} />
+              data?.data?.map((product) => (
+                <ProductListRow product={product} key={product.id} />
               ))
             )}
           </tbody>
         </table>
       </div>
+      {!isLoading && (
+        <Pagination
+          links={data?.links}
+          meta={data?.meta}
+          updateFetchUrl={updateFetchUrl}
+        />
+      )}{" "}
     </div>
   );
 };

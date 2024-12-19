@@ -1,7 +1,7 @@
 import React from "react";
 import Container from "../components/Container";
 import Breadcrumb from "../components/BreadCrumb";
-import ProductCreateCard from "../components/ProductCreateCard";
+import ProductCreateCard from "../components/product/ProductCreateCard";
 
 const ProductCreatePage = () => {
   return (

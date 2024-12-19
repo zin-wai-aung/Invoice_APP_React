@@ -3,9 +3,9 @@ import { useForm } from "react-hook-form";
 
 import { tailspin } from "ldrs";
 import toast from "react-hot-toast";
-import SaleForm from "./SaleForm";
+import SaleForm from "../SaleForm";
 import VoucherTable from "./VoucherTable";
-import useRecordStore from "../stores/useRecordStore";
+import useRecordStore from "../../stores/useRecordStore";
 import { useNavigate } from "react-router-dom";
 
 tailspin.register();
@@ -25,38 +25,39 @@ const VoucherInfo = () => {
   const { records, resetRecord } = useRecordStore();
 
   const onSubmit = async (data) => {
-    setIsSending(true);
+    setIsSending(true);  
 
     const total = records.reduce((a, b) => a + b.cost, 0);
     const tax = total * 0.07;
-    const netTotal = total + tax;
+    const net_total = total + tax;
 
-    const currentVoucher = { ...data, records, total, tax, netTotal };
-
-    console.log(data);
+    const currentVoucher = { ...data, records, total, tax, net_total };
 
     const res = await fetch(import.meta.env.VITE_API_URL + "/vouchers", {
       method: "POST",
       body: JSON.stringify(currentVoucher),
       headers: {
         "Content-Type": "application/json",
+        "Accept": "application/json",
       },
     });
 
     const json = await res.json();
 
-    console.log(json);
+    if (res.status === 201) {
+      toast.success("Voucher created successfully");
 
-    toast.success("Voucher created successfully");
+      resetRecord();
 
-    resetRecord();
+      reset();
 
-    reset();
+      setIsSending(false);
 
-    setIsSending(false);
-
-    if (data.redirect_to_detail) {
-      navigate(`/voucher/detail/${json.id}`);
+      if (data.redirect_to_detail) {
+        navigate(`/voucher/detail/${json.voucher.id}`);
+      }
+    } else {
+      toast.error(res.message)
     }
   };
 

@@ -1,7 +1,7 @@
 import React from "react";
 import Container from "../components/Container";
 import Breadcrumb from "../components/BreadCrumb";
-import ProductEditCard from "../components/ProductEditCard";
+import ProductEditCard from "../components/product/ProductEditCard";
 
 const ProductEditPage = () => {
   return (

@@ -32,7 +32,7 @@ const ProductEditCard = () => {
 
   const navigate = useNavigate();
 
-  const handleCreateProduct = async (data) => {
+  const handleUpdateProduct = async (data) => {
     // console.log(data);
     setIsSending(true);
 
@@ -65,7 +65,7 @@ const ProductEditCard = () => {
       {isLoading ? (
         <ProductListSkeletonLoader/>
       ) : (
-        <form onSubmit={handleSubmit(handleCreateProduct)}>
+        <form onSubmit={handleSubmit(handleUpdateProduct)}>
           <div className=" mb-5">
             <label
               htmlFor="first_name"
@@ -82,7 +82,7 @@ const ProductEditCard = () => {
                 minLength: 3,
                 maxLength: 30,
               })}
-              defaultValue={data.product_name}
+              defaultValue={data?.data?.product_name}
               className={`bg-gray-50 border ${
                 errors.product_name
                   ? "border-red-500 focus:ring-red-500 focus:border-red-500"
@@ -122,7 +122,7 @@ const ProductEditCard = () => {
                 min: 100,
                 max: 10000,
               })}
-              defaultValue={data.price}
+              defaultValue={data?.data?.price}
               className={`bg-gray-50 border ${
                 errors.price
                   ? "border-red-500 focus:ring-red-500 focus:border-red-500"

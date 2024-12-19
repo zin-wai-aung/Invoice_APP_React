@@ -1,42 +1,39 @@
 import React, { useRef, useState } from "react";
 import { HiSearch, HiX } from "react-icons/hi";
-import {
-  HiComputerDesktop,
-  HiMiniTrash,
-  HiOutlinePencil,
-  HiOutlineTrash,
-  HiPlus,
-  HiTrash,
-} from "react-icons/hi2";
+import { HiComputerDesktop } from "react-icons/hi2";
 import { Link } from "react-router-dom";
 import VoucherListRow from "./VoucherListRow";
 import useSWR from "swr";
 import { debounce, throttle } from "lodash";
+import Pagination from "../Pagination";
+import VoucherListSkeletonLoader from "./VoucherListSkeletonLoader";
+import EmptyStage from "../EmptyStage";
 
 const fetcher = (url) => fetch(url).then((res) => res.json());
 
 const VoucherList = () => {
-
-  const [search, setSearch] = useState("")
-  const searchInput = useRef();
-
-  const { data, isLoading, error } = useSWR(
-    search
-      ? `${import.meta.env.VITE_API_URL}/vouchers?voucher_id_like=${search}`
-      : `${import.meta.env.VITE_API_URL}/vouchers`,
-    fetcher
+  const [fetchUrl, setFetchUrl] = useState(
+    import.meta.env.VITE_API_URL + "/vouchers"
   );
 
-  const handleSearch = debounce((e) => {
-  e.preventDefault()  
-  setSearch(e.target.value)
-  console.log(search)
-},500)
+  // const [search, setSearch] = useState("")
+  const searchInput = useRef();
 
-  const handleClearSearch = () => {
-    searchInput.current.value = ""; 
-    setSearch("")
-  }
+  const { data, isLoading, error } = useSWR(fetchUrl, fetcher);
+
+  const handleSearch = debounce((e) => {
+    e.preventDefault();
+    setFetchUrl(`${import.meta.env.VITE_API_URL}/vouchers?q=${e.target.value}`);
+  }, 500);
+
+  // const handleClearSearch = () => {
+  //   searchInput.current.value = "";
+  //   setSearch("")
+  // }
+
+  const updateFetchUrl = (url) => {
+    setFetchUrl(url);
+  };
   return (
     <div>
       <div className=" flex justify-between mb-3">
@@ -52,7 +49,7 @@ const VoucherList = () => {
               className="bg-gray-50 border border-gray-300 text-stone-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder="Search Voucher"
             />
-            {search && (
+            {/* {search && (
               <button
                 className=" absolute right-2 top-0 bottom-0 m-auto"
                 onClick={handleClearSearch}
@@ -62,7 +59,7 @@ const VoucherList = () => {
                   className="scale-100 active:scale-90 duration-200"
                 />
               </button>
-            )}
+            )} */}
           </div>
         </div>
         <div className="">
@@ -92,6 +89,7 @@ const VoucherList = () => {
               <th scope="col" className="px-6 py-3 text-end">
                 Created At
               </th>
+
               <th scope="col" className="px-6 py-3 text-end">
                 Action
               </th>
@@ -104,19 +102,24 @@ const VoucherList = () => {
               </td>
             </tr>
             {isLoading ? (
-              <tr className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700 hidden last:table-row">
-                <td colSpan={5} className="px-6 py-4 text-center">
-                  Loading ...
-                </td>
-              </tr>
+              <VoucherListSkeletonLoader />
+            ) : data?.data?.length === 0 ? (
+              <EmptyStage type={'Voucher'} />
             ) : (
-              data?.map((voucher, index) => (
-                <VoucherListRow key={index} voucher={voucher} />
+              data?.data?.map((voucher) => (
+                <VoucherListRow voucher={voucher} key={voucher.id} />
               ))
             )}
           </tbody>
         </table>
       </div>
+      {!isLoading && (
+        <Pagination
+          links={data?.links}
+          meta={data?.meta}
+          updateFetchUrl={updateFetchUrl}
+        />
+      )}
     </div>
   );
 };

@@ -6,7 +6,7 @@ import useRecordStore from "../stores/useRecordStore";
 const fetcher = (url) => fetch(url).then((res) => res.json());
 const SaleForm = () => {
   const { data, isLoading, error } = useSWR(
-    import.meta.env.VITE_API_URL + "/products",
+    import.meta.env.VITE_API_URL + "/products?limit=100",
     fetcher
   );
 
@@ -29,8 +29,8 @@ const SaleForm = () => {
     }else{
 
         addRecord({
-            id: Date.now(),
-            product: currentProduct,
+          product: currentProduct,
+            product_id:currentProduct.id,
             quantity: data.quantity,
             cost: currentProduct.price * data.quantity,
             created_at: new Date().toISOString(),
@@ -58,7 +58,7 @@ const SaleForm = () => {
             >
               <option value="">Select a product</option>
               {!isLoading &&
-                data?.map((product) => (
+                data?.data?.map((product) => (
                   <option key={product.id} value={JSON.stringify(product)}>
                     {product.product_name}
                   </option>
@@ -75,6 +75,7 @@ const SaleForm = () => {
             <input
               type="number"
               id="quantityInput"
+            min={1}
               {...register("quantity")}
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               required

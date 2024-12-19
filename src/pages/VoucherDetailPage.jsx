@@ -1,7 +1,7 @@
 import React from "react";
 import Container from "../components/Container";
 import Breadcrumb from "../components/BreadCrumb";
-import VoucherDetailCard from "../components/VoucherDetailCard";
+import VoucherDetailCard from "../components/voucher/VoucherDetailCard";
 
 const VoucherDetailPage = () => {
   return (

@@ -9,24 +9,31 @@ import {
 import { useSWRConfig } from "swr";
 
 import { Link } from "react-router-dom";
-import ShowDate from "./ShowDate";
+import ShowDate from "../ShowDate";
 import { bouncy } from "ldrs";
 import toast from "react-hot-toast";
 
 bouncy.register();
 
-const ProductRow = ({ product: { id, product_name, price, created_at } }) => {
+const ProductListRow = ({
+  product: { id, product_name, price, created_at, updated_at },
+}) => {
   const { mutate } = useSWRConfig();
   const [isDeleting, setIsDeleting] = useState(false);
 
   const handleDeleteBtn = async () => {
     setIsDeleting(true);
 
-    await fetch(import.meta.env.VITE_API_URL + `/products/${id}`, {
+    const res = await fetch(import.meta.env.VITE_API_URL + `/products/${id}`, {
       method: "DELETE",
     });
-    toast.success("Product deleted successfully");
-    mutate(import.meta.env.VITE_API_URL + `/products`);
+    const json = await res.json();
+    if (res.status === 200) {
+      mutate(import.meta.env.VITE_API_URL + `/products`);
+      toast.success(json.message);
+    } else {
+      toast.success(json.message);
+    }
   };
 
   return (
@@ -41,6 +48,9 @@ const ProductRow = ({ product: { id, product_name, price, created_at } }) => {
       <td className="px-6 py-4 text-end">{price}</td>
       <td className="px-6 py-4 text-end">
         <ShowDate timestamp={created_at} />
+      </td>
+      <td className="px-6 py-4 text-end">
+        <ShowDate timestamp={updated_at} />
       </td>
       <td className="px-6 py-4 text-end">
         <div className="inline-flex rounded-md shadow-sm" role="group">
@@ -68,4 +78,4 @@ const ProductRow = ({ product: { id, product_name, price, created_at } }) => {
   );
 };
 
-export default ProductRow;
+export default ProductListRow;
