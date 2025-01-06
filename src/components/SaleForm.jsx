@@ -2,9 +2,19 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import useSWR from "swr";
 import useRecordStore from "../stores/useRecordStore";
+import useCookie from "react-use-cookie";
 
-const fetcher = (url) => fetch(url).then((res) => res.json());
 const SaleForm = () => {
+
+  const [token] = useCookie("my_token");
+  
+   const fetcher = (url) =>
+     fetch(url, {
+       headers: {
+         "Authorization": `Bearer ${token}`,
+       },
+     }).then((res) => res.json());
+
   const { data, isLoading, error } = useSWR(
     import.meta.env.VITE_API_URL + "/products?limit=100",
     fetcher
@@ -40,23 +50,21 @@ const SaleForm = () => {
     reset();
   };
   return (
-    <div className=" bg-white p-5 rounded-lg border mb-5">
+    <div className="p-5 rounded-lg border border-neutral mb-5">
       <form action="#" id="recordForm" onSubmit={handleSubmit(onSubmit)}>
-        <div className="grid grid-cols-5 gap-5">
-          <div className="col-span-2">
-            <label
-              htmlFor="productSelect"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            >
-              Select Your Product
-            </label>
+        <div className=" flex items-end gap-x-5">
+          <label className="form-control w-[50%]">
+            <div className="label">
+              <span className="label-text"> Select Your Product</span>
+            </div>
+
             <select
               id="productSelect"
               {...register("product")}
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              className="select select-accent w-full max-w-xs"
               required
             >
-              <option value="">Select a product</option>
+              <option disabled selected>Select</option>
               {!isLoading &&
                 data?.data?.map((product) => (
                   <option key={product.id} value={JSON.stringify(product)}>
@@ -64,31 +72,27 @@ const SaleForm = () => {
                   </option>
                 ))}
             </select>
-          </div>
-          <div className="col-span-2">
-            <label
-              htmlFor="quantityInput"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            >
-              Quantity
-            </label>
+          </label>
+
+          <label className="form-control w-[20%]">
+            <div className="label">
+              <span className="label-text">Quantity</span>
+            </div>
             <input
               type="number"
               id="quantityInput"
-            min={1}
+              min={1}
               {...register("quantity")}
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               required
+              className="input input-bordered w-full"
             />
-          </div>
-          <div className="col-span-1">
+          </label>
             <button
               type="submit"
-              className="text-blue-700 w-full h-full flex justify-center items-center hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm  text-center me-2 mb-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800"
+              className="btn btn-active btn-accent text-nowrap w-[30%]"
             >
               Add Product
             </button>
-          </div>
         </div>
       </form>
     </div>

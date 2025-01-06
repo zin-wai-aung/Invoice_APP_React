@@ -1,12 +1,22 @@
 import html2pdf from "html2pdf.js";
 import printJS from "print-js";
 import React from "react";
+import { FaFileDownload } from "react-icons/fa";
+import { IoPrint } from "react-icons/io5";
 import { useParams } from "react-router-dom";
+import useCookie from "react-use-cookie";
 import useSWR from "swr";
 
-const fetcher = (url) => fetch(url).then((res) => res.json());
-
 const VoucherDetailCard = () => {
+  const [token] = useCookie("my_token");
+
+  const fetcher = (url) =>
+    fetch(url, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }).then((res) => res.json());
+
   const { id } = useParams();
 
   const { data, isLoading, error } = useSWR(
@@ -14,13 +24,17 @@ const VoucherDetailCard = () => {
     fetcher
   );
 
+  if (isLoading)
+    return (
+      <div className="ml-32 mt-32">
+        <span className="loading loading-spinner text-accent"></span>
+      </div>
+    );
 
   const handlePrint = () => {
-    // window.print();
     printJS({
       printable: "printArea",
       type: "html",
-      //   header: "INVOICE",
       scanStyles: true,
       css: [
         "https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css",
@@ -31,40 +45,56 @@ const VoucherDetailCard = () => {
   const handlePdf = () => {
     const element = document.getElementById("printArea");
 
-    // Options for PDF generation
+    // Check if the element exists to avoid errors
+    if (!element) {
+      console.error("Element with id 'printArea' not found.");
+      return;
+    }
+
+    // Correct options for html2pdf
     const opt = {
-      margin: 0.4,
+      margin: [10, 5], // Adjusted to avoid content clipping
       filename: "invoice.pdf",
-      image: { type: "jpeg", quality: 300 },
-      html2canvas: { scale: 1 },
-      jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' },
+      image: { type: "jpeg", quality: 1 },
+      html2canvas: {
+        scale: 2, // Higher scale for better PDF quality
+        logging: true, // Enable logging for debugging
+        useCORS: true, // Handles cross-origin images
+      },
+      jsPDF: { unit: "pt", format: "a4", orientation: "portrait" }, // Updated for standard A4
     };
 
-    // Convert the element to PDF
-    html2pdf().from(element).set(opt).save();
+    // Use html2pdf library to generate the PDF
+    html2pdf()
+      .set(opt)
+      .from(element)
+      .save()
+      .catch((error) => {
+        console.error("Error generating PDF:", error);
+      });
   };
 
-  if (isLoading) return <p>Loading...</p>;
+
 
 
   return (
-    <div className=" flex gap-5">
-      <div id="printArea" className="w-[14.8cm] bg-white ">
+    <div className="flex gap-x-20">
+      <div id="printArea" className="w-[14.8cm] p-10 bg-neutral/30 rounded-xl">
         <div className="flex justify-between items-start mb-8">
           <div>
             <h1 className="text-4xl font-bold mb-2">INVOICE</h1>
             <p className="text-xl">{data?.data?.voucher_id}</p>
           </div>
           <div className="text-right">
-            <p className="font-bold">Invoice to</p>
-            <p>{data?.data?.customer_name}</p>
+            <p className="italic">Invoice to</p>
+            <p className="font-bold">{data?.data?.customer_name}</p>
             <p>Date: {data?.data?.sale_date}</p>
           </div>
         </div>
 
-        <table className="w-full mb-8">
+        <table className="table table-zebra">
           <thead>
-            <tr className="border-b-2 border-gray-300">
+            <tr className="border-b-2 border-gray-500">
               <th className="text-left py-2 text-sm">No</th>
               <th className="text-left py-2 text-sm">Description</th>
               <th className="text-right py-2 text-sm">Qty</th>
@@ -74,7 +104,7 @@ const VoucherDetailCard = () => {
           </thead>
           <tbody>
             {data?.data?.records.map((record, index) => (
-              <tr key={record.id} className="border-b border-gray-200">
+              <tr key={record.id} className="border-b border-gray-500">
                 <td className="py-2 text-sm">{index + 1}</td>
                 <td className="py-2 text-sm">{record.product.product_name}</td>
                 <td className="text-right py-2 text-sm">{record.quantity}</td>
@@ -86,7 +116,7 @@ const VoucherDetailCard = () => {
             ))}
           </tbody>
           <tfoot>
-            <tr className="border-b border-gray-200">
+            <tr className="border-b border-gray-500">
               <td className="py-2 text-right text-sm" colSpan={4}>
                 Total
               </td>
@@ -94,7 +124,7 @@ const VoucherDetailCard = () => {
                 {parseFloat(data?.data?.total).toFixed(2)}
               </td>
             </tr>
-            <tr className="border-b border-gray-200">
+            <tr className="border-b border-gray-500">
               <td className="py-2 text-right text-sm" colSpan={4}>
                 Tax
               </td>
@@ -102,7 +132,7 @@ const VoucherDetailCard = () => {
                 {parseFloat(data?.data?.tax).toFixed(2)}
               </td>
             </tr>
-            <tr className="border-b border-gray-200">
+            <tr className="border-b border-gray-500">
               <td className="py-2 text-right text-sm" colSpan={4}>
                 Net Total
               </td>
@@ -113,38 +143,40 @@ const VoucherDetailCard = () => {
           </tfoot>
         </table>
 
-        <div className=" text-xs mb-8">
-          <div className=" ">
+        <div className="text-xs my-10">
+          <div>
             <h2 className="font-bold mb-2">Payment Transfer to</h2>
-            <p>Kpay,Wave - 09250152018</p>
-            <p>KBZ Bank - 02730102705025601</p>
-            <p>AYA Bank - 20003674121</p>
+            <p>09123456789</p>
+            <p>02593566346238</p>
+            <p>300459812010</p>
           </div>
-          <div className="  ">
-            <h2 className="font-bold text-xl">MMS IT</h2>
-            <p>48, 1st Floor, Shan Kone St.</p>
-            <p>+959-250-152-018</p>
-            <p>enquiry@mms-it.com</p>
+          <div>
+            <h2 className="font-bold text-lg">InvoiceGenerator</h2>
+            <p>48, Rose Street, Jasmine.</p>
+            <p>+00-123-456-789</p>
+            <p>enquiry@example.com</p>
           </div>
         </div>
 
         <div className="border-t-2 border-gray-300 pt-4">
-          <p className="mt-4 text-center text-sm">Thanks to You</p>
+          <p className="mt-4 text-center text-sm">Thank You</p>
         </div>
       </div>
       <div className="flex flex-col gap-3">
         <button
-          className="text-white flex justify-center items-center gap-3 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+          className=" btn btn-accent text-neutral"
           onClick={handlePrint}
         >
           Print Voucher
+          <IoPrint className=" text-xl"/>
         </button>
 
         <button
-          className="text-white flex justify-center items-center gap-3 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+          className="btn btn-accent text-neutral"
           onClick={handlePdf}
         >
           Download PDF
+          <FaFileDownload className=" text-xl"/>
         </button>
       </div>
     </div>

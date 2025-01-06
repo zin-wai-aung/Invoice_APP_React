@@ -9,10 +9,16 @@ import { Link } from "react-router-dom";
 
 bouncy.register();
 const VoucherListRow = ({
-  voucher: { id, voucher_id, customer_name, customer_email, sale_date },
+  token,
+  voucher: {
+    id,
+    voucher_id,
+    customer_name,
+    customer_email,
+    total,
+    created_at,
+  },
 }) => {
-  // console.log(id);
-
   const { mutate } = useSWRConfig();
   const [isDeleting, setIsDeleting] = useState(false);
 
@@ -21,30 +27,32 @@ const VoucherListRow = ({
 
     await fetch(import.meta.env.VITE_API_URL + `/vouchers/${id}`, {
       method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     });
     mutate(import.meta.env.VITE_API_URL + `/vouchers`);
     toast.success("Voucher deleted successfully");
   };
   return (
-    <tr className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
-      <td className="px-6 py-4">{voucher_id}</td>
-      <th
-        scope="row"
-        className="px-6 py-4 font-medium text-stone-900 whitespace-nowrap dark:text-white"
-      >
-        {customer_name}
+    <tr>
+      <td>{id}</td>
+      <td>{voucher_id}</td>
+      <th className="px-6 py-4 font-medium  whitespace-nowrap flex flex-col">
+        <span className="text-slate-300">{customer_name}</span>
+        <span className=" text-sm text-slate-500">{customer_email}</span>{" "}
       </th>
-      <td className="px-6 py-4 text-end">{customer_email}</td>
-      <td className="px-6 py-4 text-end">
-        <ShowDate timestamp={sale_date} />
+      <td className=" text-end pe-10">{total}</td>
+      <td>
+        <ShowDate timestamp={created_at} />
       </td>
 
-      <td className="px-6 py-4 text-end">
+      <td>
         <div className="inline-flex  rounded-md shadow-sm" role="group">
           <button
             type="button"
             onClick={handleDeleteBtn}
-            className="size-10 flex justify-center items-center text-sm font-medium text-red-600 bg-white border border-gray-200 rounded-s-lg hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:ring-blue-500 dark:focus:text-white"
+            className="size-10 flex justify-center items-center text-sm font-medium text-red-600 bg-neutral rounded-s-lg hover:bg-neutral-800 hover:text-accent focus:z-10 focus:ring-2"
           >
             {isDeleting ? (
               <l-bouncy size="20" speed="1.75" color="red"></l-bouncy>
@@ -53,8 +61,8 @@ const VoucherListRow = ({
             )}
           </button>
           <Link
-            to={`/voucher/detail/${id}`}
-            className="size-10 flex justify-center items-center text-sm font-medium  bg-white border border-gray-200 rounded-e-lg hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:ring-blue-500 dark:focus:text-white"
+            to={`/dashboard/voucher/detail/${id}`}
+            className="size-10 flex justify-center items-center text-sm font-medium  bg-neutral rounded-e-lg hover:bg-neutral-800 hover:text-accent focus:z-10 focus:ring-2"
           >
             <HiOutlineArrowLongRight />
           </Link>

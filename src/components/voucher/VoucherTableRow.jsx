@@ -4,42 +4,38 @@ import useRecordStore from "../../stores/useRecordStore";
 
 const VoucherTableRow = ({
   record: {
-    id,
-    cost,
+    product: { id, product_name, price },
+    product_id,
     quantity,
-    product: { product_name, price },
+    cost,
   },
   index,
 }) => {
   const { removeRecord, changeQuantity } = useRecordStore();
 
+  // Fix: Added the removeRecord call inside handleDelete
   const handleDelete = () => {
-    removeRecord(id);
-    toast.success("Product removed successfully");
+    removeRecord(product_id); // Pass the product_id to removeRecord
+    toast.success("Product removed successfully"); // Notify user about successful deletion
   };
 
   const handleIncreaseQuantity = () => {
-    changeQuantity(id, 1);
+    changeQuantity(product_id, 1); // Ensure correct ID is passed
   };
 
   const handleDecreaseQuantity = () => {
-    changeQuantity(id, -1);
+    changeQuantity(product_id, -1); // Ensure correct ID is passed
   };
 
   return (
-    <tr className="group odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
+    <tr className="group">
       <td className="px-6 py-4 td-counter">{index + 1}</td>
-      <th
-        scope="row"
-        className="record-name px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-      >
-        {product_name}
-      </th>
+      <th scope="row">{product_name}</th>
       <td className="px-6 py-4 text-end record-price">{price}</td>
-      <td className="px-6 py-4 text-end">
+      <td className="px-6 py-4 text-center">
         <button
           onClick={handleDecreaseQuantity}
-          className="q-sub pointer-events-none group-hover:pointer-events-auto opacity-0 group-hover:opacity-100 -translate-x-6 group-hover:translate-x-0 duration-200 bg-blue-100 text-blue-600 p-1 rounded"
+          className="q-sub pointer-events-none group-hover:pointer-events-auto opacity-0 group-hover:opacity-100 -translate-x-6 group-hover:translate-x-0 duration-200 bg-slate-700 text-white p-1 rounded"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -56,10 +52,10 @@ const VoucherTableRow = ({
             />
           </svg>
         </button>
-        <span className="record-q w-5 inline-block">{quantity}</span>
+        <span className="record-q w-5 inline-block"> {quantity} </span>
         <button
           onClick={handleIncreaseQuantity}
-          className="q-add pointer-events-none group-hover:pointer-events-auto opacity-0 group-hover:opacity-100 translate-x-6 group-hover:translate-x-0 duration-200 bg-blue-100 text-blue-600 p-1 rounded"
+          className="q-add pointer-events-none group-hover:pointer-events-auto opacity-0 group-hover:opacity-100 translate-x-6 group-hover:translate-x-0 duration-200 bg-slate-700 text-white p-1 rounded"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -78,12 +74,12 @@ const VoucherTableRow = ({
         </button>
       </td>
       <td className="px-6 py-4 text-end relative">
-        <span className="record-cost">{cost}</span>
+        <span className="record-cost"> {cost} </span>
       </td>
       <td>
         <button
-          onClick={handleDelete}
-          className=" pointer-events-none duration-200 opacity-0 group-hover:opacity-100 group-hover:pointer-events-auto left-full top-3 translate-x-2 active:scale-75 bg-blue-100 p-2 rounded-lg"
+          onClick={handleDelete} // Ensure this triggers the deletion
+          className="pointer-events-none duration-200 opacity-0 group-hover:opacity-100 group-hover:pointer-events-auto left-full top-3 translate-x-2 active:scale-75 bg-slate-700 text-white p-2 rounded-lg"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -91,7 +87,7 @@ const VoucherTableRow = ({
             viewBox="0 0 24 24"
             strokeWidth="1.5"
             stroke="currentColor"
-            className="w-4 h-4 pointer-events-none stroke-blue-700 stroke-1"
+            className="w-4 h-4 pointer-events-none stroke-1"
           >
             <path
               strokeLinecap="round"

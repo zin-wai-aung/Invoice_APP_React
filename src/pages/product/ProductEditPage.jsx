@@ -1,7 +1,7 @@
 import React from "react";
-import Container from "../components/Container";
-import Breadcrumb from "../components/BreadCrumb";
-import ProductEditCard from "../components/product/ProductEditCard";
+import Container from "../../components/Container";
+import Breadcrumb from "../../components/BreadCrumb";
+import ProductEditCard from "../../components/product/ProductEditCard";
 
 const ProductEditPage = () => {
   return (
@@ -9,7 +9,7 @@ const ProductEditPage = () => {
       <Container>
         <Breadcrumb
           currentPageTitle={"Edit Product"}
-          links={[{ title: "Product Module", path: "/product" }]}
+          links={[{ title: "Product Module", path: "/dashboard/product" }]}
         />
         <ProductEditCard />
       </Container>

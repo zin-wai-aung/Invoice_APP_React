@@ -1,11 +1,8 @@
 import React from "react";
-import Container from "../components/Container";
-import ModuleBtn from "../components/ModuleBtn";
-import {
-  HiCircleStack,
-  HiComputerDesktop,
-  HiDocumentDuplicate,
-} from "react-icons/hi2";
+import { Container, ModuleBtn } from "../components";
+import { AiFillProduct } from "react-icons/ai";
+import { FaFileInvoice } from "react-icons/fa6";
+import { MdAssignmentAdd } from "react-icons/md";
 
 const DashboardPage = () => {
   return (
@@ -15,22 +12,22 @@ const DashboardPage = () => {
           <div className=" col-span-1 row-span-1">
             <ModuleBtn
               name={"Product Module"}
-              icon={<HiCircleStack className=" size-14" />}
-              url={"/product"}
+              icon={<AiFillProduct className=" size-14" />}
+              url={"/dashboard/product"}
             />
           </div>
           <div className=" col-span-1 row-span-1">
             <ModuleBtn
               name={"Sale Module"}
-              icon={<HiComputerDesktop className=" size-14" />}
-              url={"/sale"}
+              icon={<MdAssignmentAdd className=" size-14" />}
+              url={"/dashboard/sale"}
             />
           </div>
           <div className=" col-span-1 row-span-1">
             <ModuleBtn
-              name={"Voucher Module"}
-              icon={<HiDocumentDuplicate className=" size-14" />}
-              url={"/voucher"}
+              name={"Invoice Module"}
+              icon={<FaFileInvoice className=" size-14" />}
+              url={"/dashboard/voucher"}
             />
           </div>
         </div>

@@ -5,9 +5,9 @@ const useRecordStore = create((set) => ({
   addRecord: (newRecord) => {
     set((state) => ({ records: [...state.records, newRecord] }));
   },
-  removeRecord: (id) => {
+  removeRecord: (product_id) => {
     set((state) => ({
-      records: state.records.filter((record) => record.id !== id),
+      records: state.records.filter((record) => record.product_id !== product_id),
     }));
   },
   changeQuantity: (id, quantity) => {

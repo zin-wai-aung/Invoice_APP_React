@@ -1,7 +1,6 @@
 import React from "react";
-import Breadcrumb from "../components/BreadCrumb";
-import Container from "../components/Container";
-import VoucherInfo from "../components/voucher/VoucherInfo";
+import {Breadcrumb,Container,} from "../components";
+import {VoucherInfo} from "../components/voucher";
 
 const SalePage = () => {
   return (

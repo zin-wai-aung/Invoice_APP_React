@@ -1,7 +1,7 @@
 import React from "react";
-import Container from "../components/Container";
-import Breadcrumb from "../components/BreadCrumb";
-import VoucherDetailCard from "../components/voucher/VoucherDetailCard";
+import Container from "../../components/Container";
+import Breadcrumb from "../../components/BreadCrumb";
+import VoucherDetailCard from "../../components/voucher/VoucherDetailCard";
 
 const VoucherDetailPage = () => {
   return (
@@ -9,7 +9,7 @@ const VoucherDetailPage = () => {
       <Container>
         <Breadcrumb
           currentPageTitle={"Voucher Detail"}
-          links={[{ title: "Voucher Module", path: "/voucher" }]}
+          links={[{ title: "Voucher Module", path: "/dashboard/voucher" }]}
         />
         <VoucherDetailCard/>
       </Container>

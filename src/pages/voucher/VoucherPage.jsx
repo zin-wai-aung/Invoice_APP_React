@@ -1,7 +1,7 @@
 import React from "react";
-import Breadcrumb from "../components/BreadCrumb";
-import Container from "../components/Container";
-import VoucherList from "../components/voucher/VoucherList";
+import Breadcrumb from "../../components/BreadCrumb";
+import Container from "../../components/Container";
+import VoucherList from "../../components/voucher/VoucherList";
 
 const VoucherPage = () => {
   return (

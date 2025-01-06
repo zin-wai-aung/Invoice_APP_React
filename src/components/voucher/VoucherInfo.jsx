@@ -1,16 +1,20 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-
+import { useNavigate } from "react-router-dom";
 import { tailspin } from "ldrs";
 import toast from "react-hot-toast";
+
 import SaleForm from "../SaleForm";
 import VoucherTable from "./VoucherTable";
 import useRecordStore from "../../stores/useRecordStore";
-import { useNavigate } from "react-router-dom";
+import generateInvoiceNumber from '../../utils/generateInvoiceNumber'
+import useCookie from "react-use-cookie";
 
 tailspin.register();
 
 const VoucherInfo = () => {
+    const [token] = useCookie("my_token");
+  
   const {
     register,
     handleSubmit,
@@ -39,10 +43,12 @@ const VoucherInfo = () => {
       headers: {
         "Content-Type": "application/json",
         "Accept": "application/json",
+        "Authorization": `Bearer ${token}`,
       },
     });
 
     const json = await res.json();
+
 
     if (res.status === 201) {
       toast.success("Voucher created successfully");
@@ -54,29 +60,14 @@ const VoucherInfo = () => {
       setIsSending(false);
 
       if (data.redirect_to_detail) {
-        navigate(`/voucher/detail/${json.voucher.id}`);
+        navigate(`/dashboard/voucher/detail/${json.data.id}`);
       }
     } else {
       toast.error(res.message)
     }
   };
 
-  // Utility function to generate a unique invoice number
-  function generateInvoiceNumber() {
-    // Get the current date
-    const date = new Date();
 
-    // Format the date as YYYYMMDD
-    const formattedDate = date.toISOString().slice(0, 10).replace(/-/g, "");
-
-    // Generate a random number between 1000 and 9999
-    const randomNumber = Math.floor(1000 + Math.random() * 9000);
-
-    // Combine the formatted date and the random number
-    const invoiceNumber = `INV-${formattedDate}-${randomNumber}`;
-
-    return invoiceNumber;
-  }
 
   return (
     <div className=" grid grid-cols-4 gap-5">
@@ -93,156 +84,120 @@ const VoucherInfo = () => {
         >
           <div className=" grid grid-cols-1 gap-5 mb-10">
             <div className=" col-span-1">
-              <div className="">
-                <label
-                  className={`block mb-2 text-sm font-medium ${
-                    errors.voucher_id ? "text-red-500" : "text-gray-900"
-                  } dark:text-white`}
-                >
-                  Voucher ID
-                </label>
+              <label className="form-control">
+                <div className="label">
+                  <span className="label-text">Voucher Id</span>
+                </div>
                 <input
                   type="text"
                   defaultValue={generateInvoiceNumber()}
                   {...register("voucher_id", {
                     required: true,
                   })}
-                  className={`bg-gray-50 border ${
+                  className={`input input-bordered w-full ${
                     errors.voucher_id
                       ? "border-red-500 focus:ring-red-500 focus:border-red-500"
-                      : "border-gray-300 focus:ring-blue-500 focus:border-blue-500"
-                  } text-gray-900 text-sm rounded-lg  block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`}
+                      : ""
+                  }`}
                 />
-                {errors.voucher_id?.type === "required" && (
-                  <p className=" text-red-500 text-sm mt-1">
-                    Voucher ID is required
-                  </p>
-                )}
-              </div>
+              </label>
+
+              {errors.voucher_id?.type === "required" && (
+                <p className=" text-red-500 text-sm mt-1">
+                  Voucher ID is required
+                </p>
+              )}
             </div>
             <div className=" col-span-1">
-              <div className="">
-                <label
-                  className={`block mb-2 text-sm font-medium ${
-                    errors.customer_name ? "text-red-500" : "text-gray-900"
-                  } dark:text-white`}
-                >
-                  Customer Name
-                </label>
+              <label className="form-control">
+                <div className="label">
+                  <span className="label-text">Customer Name</span>
+                </div>
                 <input
                   type="text"
                   {...register("customer_name", {
                     required: true,
                   })}
-                  className={`bg-gray-50 border ${
+                  className={`input input-bordered w-full ${
                     errors.customer_name
                       ? "border-red-500 focus:ring-red-500 focus:border-red-500"
-                      : "border-gray-300 focus:ring-blue-500 focus:border-blue-500"
-                  } text-gray-900 text-sm rounded-lg  block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`}
+                      : ""
+                  }`}
                 />
-                {errors.customer_name?.type === "required" && (
-                  <p className=" text-red-500 text-sm mt-1">
-                    Customer Name is required
-                  </p>
-                )}
-              </div>
+              </label>
             </div>
             <div className=" col-span-1">
-              <div className="">
-                <label
-                  className={`block mb-2 text-sm font-medium ${
-                    errors.customer_email ? "text-red-500" : "text-gray-900"
-                  } dark:text-white`}
-                >
-                  Customer Email
-                </label>
+              <label className="form-control">
+                <div className="label">
+                  <span className="label-text">Customer Email</span>
+                </div>
                 <input
                   type="text"
                   {...register("customer_email", {
                     required: true,
                   })}
-                  className={`bg-gray-50 border ${
+                  className={`input input-bordered w-full ${
                     errors.customer_email
                       ? "border-red-500 focus:ring-red-500 focus:border-red-500"
-                      : "border-gray-300 focus:ring-blue-500 focus:border-blue-500"
-                  } text-gray-900 text-sm rounded-lg  block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`}
+                      : ""
+                  }`}
                 />
-                {errors.customer_email?.type === "required" && (
-                  <p className=" text-red-500 text-sm mt-1">
-                    Customer Email is required
-                  </p>
-                )}
-              </div>
+              </label>
             </div>
             <div className=" col-span-1">
-              <div className="">
-                <label
-                  className={`block mb-2 text-sm font-medium ${
-                    errors.sale_date ? "text-red-500" : "text-gray-900"
-                  } dark:text-white`}
-                >
-                  Sale Date
-                </label>
+              <label className="form-control">
+                <div className="label">
+                  <span className="label-text">Sale Date</span>
+                </div>
                 <input
                   type="date"
                   defaultValue={new Date().toISOString().slice(0, 10)}
-                  // defaultValue={"2022-01-01"}
                   {...register("sale_date", {
                     required: true,
                   })}
-                  className={`bg-gray-50 border ${
+                  className={`input input-bordered w-full ${
                     errors.sale_date
                       ? "border-red-500 focus:ring-red-500 focus:border-red-500"
-                      : "border-gray-300 focus:ring-blue-500 focus:border-blue-500"
-                  } text-gray-900 text-sm rounded-lg  block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`}
+                      : ""
+                  }`}
                 />
-                {errors.sale_date?.type === "required" && (
-                  <p className=" text-red-500 text-sm mt-1">
-                    Sale Date is required
-                  </p>
-                )}
-              </div>
+              </label>
             </div>
           </div>
-          <div className=" flex flex-col justify-end items-end  mt-auto gap-3">
-            <div className="flex items-center">
-              <label
-                htmlFor="redirect_to_detail"
-                className="me-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-              >
+          <div className=" flex flex-col justify-end items-end mt-auto gap-3">
+            <label className="cursor-pointer label">
+              <span className="label-text me-1">
+                {" "}
                 Redirect to Voucher Detail
-              </label>
+              </span>
               <input
                 {...register("redirect_to_detail")}
                 form="infoForm"
                 id="redirect_to_detail"
                 type="checkbox"
-                value=""
-                className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                className="checkbox checkbox-accent checkbox-sm"
               />
-            </div>
-            <div className="flex items-center">
-              <label
-                htmlFor="all-correct"
-                className="me-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-              >
+            </label>
+
+            <label className="cursor-pointer label">
+              <span className="label-text me-1 text-nowrap">
+                {" "}
                 Make sure all field are correct
-              </label>
+              </span>
               <input
                 {...register("all_correct")}
                 required
                 form="infoForm"
                 id="all-correct"
                 type="checkbox"
-                value=""
-                className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                className="checkbox checkbox-accent checkbox-sm"
               />
-            </div>
+            </label>
 
             <button
               type="submit"
               form="infoForm"
-              className="text-white bg-blue-700 inline-flex gap-3 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+              className=" btn btn-accent w-full btn-lg"
             >
               <span>Confirm Voucher</span>
               {isSending && (
@@ -252,7 +207,7 @@ const VoucherInfo = () => {
                   speed="0.9"
                   color="white"
                 ></l-tailspin>
-              )}
+              )}{" "}
             </button>
           </div>
         </form>
