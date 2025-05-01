@@ -1,5 +1,4 @@
 import React from "react";
-import { BiUser } from "react-icons/bi";
 import { HiChevronRight, HiMiniHome } from "react-icons/hi2";
 import { LuChevronLeft, LuChevronRight } from "react-icons/lu";
 import { Link, useNavigate } from "react-router-dom";
