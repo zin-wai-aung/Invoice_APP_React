@@ -1,7 +1,8 @@
 import React from "react";
 import Container from "../../../components/Container";
-import Breadcrumb from "../../../components/BreadCrumb";
 import ProductList from '../components/ProductList'
+import Breadcrumb from "@/components/Breadcrumb";
+
 const ProductPage = () => {
   return (
     <section>

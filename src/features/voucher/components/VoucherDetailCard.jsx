@@ -34,39 +34,21 @@ const VoucherDetailCard = () => {
   };
 
   const handlePdf = () => {
-    const element = document.getElementById("printArea");
+  console.log('download')
+  const element = document.getElementById("printArea");
 
-    // Check if the element exists to avoid errors
-    if (!element) {
-      console.error("Element with id 'printArea' not found.");
-      return;
-    }
-
-    // Correct options for html2pdf
-    const opt = {
-      margin: [10, 5], // Adjusted to avoid content clipping
-      filename: "invoice.pdf",
-      image: { type: "jpeg", quality: 1 },
-      html2canvas: {
-        scale: 2, // Higher scale for better PDF quality
-        logging: true, // Enable logging for debugging
-        useCORS: true, // Handles cross-origin images
-      },
-      jsPDF: { unit: "pt", format: "a4", orientation: "portrait" }, // Updated for standard A4
-    };
-
-    // Use html2pdf library to generate the PDF
-    html2pdf()
-      .set(opt)
-      .from(element)
-      .save()
-      .catch((error) => {
-        console.error("Error generating PDF:", error);
-      });
+  // Options for PDF generation
+  const opt = {
+    margin: 0.1,
+    filename: "invoice.pdf",
+    image: { type: "jpeg", quality: 0.98 },
+    html2canvas: { scale: 1 },
+    jsPDF: { unit: "in", format: "a5", orientation: "portrait" },
   };
 
-
-
+  // Convert the element to PDF
+  html2pdf().from(element).set(opt).save();
+};
 
   return (
     <div className="flex gap-x-20">
