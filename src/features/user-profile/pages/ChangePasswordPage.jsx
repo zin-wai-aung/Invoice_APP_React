@@ -1,9 +1,8 @@
 import useCookie, { removeCookie } from "react-use-cookie";
 import Container from "../../../components/Container";
-import Breadcrumb from "../../../components/BreadCrumb";
+import Breadcrumb from "../../../components/Breadcrumb";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
-import useUserStore from "../../../stores/useUserStore";
 import { BiUser } from "react-icons/bi";
 import { FaLock } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
@@ -22,7 +21,7 @@ const UserProfileChangeNamePassword = () => {
     const res = await fetch(
       import.meta.env.VITE_API_URL + "/user-profile/change-password",
       {
-        method: "POST",
+        method: "PATCH",
         body: JSON.stringify(data),
         headers: {
           "Content-Type": "application/json",

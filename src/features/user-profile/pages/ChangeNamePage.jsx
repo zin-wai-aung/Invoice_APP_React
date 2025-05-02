@@ -1,5 +1,5 @@
 import Container from "../../../components/Container";
-import Breadcrumb from "../../../components/BreadCrumb";
+import Breadcrumb from "../../../components/Breadcrumb";
 import userChangeName from "../hooks/useChangeName";
 import { BiUser } from "react-icons/bi";
 import { tailspin } from "ldrs";

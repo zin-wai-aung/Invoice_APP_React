@@ -1,8 +1,8 @@
 import Container from "../../../components/Container";
-import Breadcrumb from "../../../components/BreadCrumb";
 import { HiCamera } from "react-icons/hi2";
 import { BiEditAlt, BiUser } from "react-icons/bi";
 import useChangeImage from "../hooks/useChangeImage";
+import Breadcrumb from "../../../components//Breadcrumb";
 
 const UserProfileChangeImagePage = () => {
   

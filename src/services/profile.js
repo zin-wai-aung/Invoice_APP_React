@@ -5,7 +5,7 @@ export const changeName = (data) => {
    return fetch(
       import.meta.env.VITE_API_URL + "/user-profile/change-name",
       {
-        method: "POST",
+        method: "PATCH",
         body: JSON.stringify(data),
         headers: {
           "Content-Type": "application/json",
