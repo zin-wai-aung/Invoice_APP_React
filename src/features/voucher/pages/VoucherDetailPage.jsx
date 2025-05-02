@@ -1,6 +1,6 @@
 import React from "react";
 import Container from "../../../components/Container";
-import Breadcrumb from "../../../components/BreadCrumb";
+import Breadcrumb from "../../../components/Breadcrumb";
 import VoucherDetailCard from "../components/VoucherDetailCard";
 
 const VoucherDetailPage = () => {
